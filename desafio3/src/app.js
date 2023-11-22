@@ -3,7 +3,7 @@ const ProductManager = require('./productManager');
 
 const app = express();
 const port = 8000;
-const productManager = new ProductManager('../products.json');
+const productManager = new ProductManager('products.json');
 
 
 app.get('/products', async (req, res) => {

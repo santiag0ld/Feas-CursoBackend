@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "title": "Almendras",
+    "description": "Almendras fraccionadas de a 100gr",
+    "price": 1950,
+    "thumbnail": "imagen",
+    "code": "ALM",
+    "stock": 1,
+    "category": "Sueltos",
+    "status": true
+},
+
+{
+  "id": 2,
+  "title": "Yogurt Griego",
+  "description": "Yogurt Griego marca Ygiarto de 250gr",
+  "price": 2130,
+  "thumbnail": "imagen",
+  "code": "YOG",
+  "stock": 2,
+  "category": "Heladera",
+  "status": true
+},
+{
+  "id": 3,
+  "title": "Hojas de Hibisco",
+  "description": "Hojas secas de Hibisco fraccionadas de a 50gr",
+  "price": 2500,
+  "thumbnail": "imagen",
+  "code": "HIB",
+  "stock": 3,
+  "category": "Hierbas",
+  "status": true
+},
+{
+  "id": 4,
+  "title": "Café en Granos",
+  "description": "Café en Granos marca Café Molido de 250gr",
+  "price": 2000,
+  "thumbnail": "imagen",
+  "code": "CAF",
+  "stock": 5,
+  "category": "Infusiones",
+  "status": true
+}
+]

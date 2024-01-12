@@ -1,0 +1,15 @@
+### ---------------------------------------------------------------
+### REST CARD ###
+### ---------------------------------------------------------------
+
+### get Carts id
+GET http://localhost:8080/api/carts/6580f6baf3830e76e033843e
+
+### post Carts crear carrito
+POST http://localhost:8080/api/carts/
+
+### post Carts agregar producto
+POST http://localhost:8080/api/carts/6580f6baf3830e76e033843e/product/1
+
+### post Carts agregar producto
+DELETE http://localhost:8080/api/carts/6580f6baf3830e76e033843e/product/1

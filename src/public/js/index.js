@@ -1,0 +1,1 @@
+document.querySelector('#copyright').innerHTML = `<p>&copy; Copyright ${new Date().getFullYear()}</p>`

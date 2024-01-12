@@ -1,0 +1,50 @@
+<main>
+  <div>
+    <h3>INGRESO DE PRODUCTOS</h3>
+    <div>
+      {{#each product}}
+        <div>
+          <img src={{this.thumbnail}} />
+          <p>{{this.title}}</p>
+          <p>Precio: $ {{this.price}}</p>
+          <p>Código: {{this.code}}</p>
+          <button onclick="deletePrd('{{this.code}}')">Eliminar</button>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <form>
+    <div>
+      <div>
+        <label for="image">Imagen</label>
+        <input type="text" name="image" id="image" />
+      </div>
+      <div>
+        <label for="title">Producto</label>
+        <input type="text" name="title" id="title" />
+      </div>
+      <div>
+        <label for="cat">Categoria</label>
+        <input type="text" name="cat" id="cat" />
+      </div>
+      <div>
+        <label for="price">Precio</label>
+        <input type="number" name="price" id="price" />
+      </div>
+      <div>
+        <label for="stock">Stock</label>
+        <input type="number" name="stock" id="stock" />
+      </div>
+      <div>
+        <label for="code">Código del Producto</label>
+        <input type="text" name="code" id="code" />
+      </div>
+      <input class="Button" type="submit" value="Cargar" id="Button" />
+    </div>
+  </form>
+
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/realTimeProducts.js"></script>

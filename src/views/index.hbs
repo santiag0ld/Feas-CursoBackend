@@ -1,0 +1,17 @@
+<main>
+  <div>
+    <h1>Bienvenidos a nuestra Tienda!</h1>
+    <div>
+      <h3>Productos</h3>
+    </div>
+    <div>
+      {{#each product}}
+        <div>
+          <img src={{this.thumbnail}}>
+          <p>{{this.title}}</p>
+          <p>$ {{this.price}}</p>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</main>

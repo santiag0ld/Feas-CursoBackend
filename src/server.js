@@ -33,9 +33,6 @@ app.engine(
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use('/', viewsRouter);
 app.use('/api/carts/', cartsRouter);
 app.use('/api/products/', productsRouter);

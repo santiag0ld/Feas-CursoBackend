@@ -1,4 +1,3 @@
-// index.js
 const express = require('express');
 const { Router } = require('express');
 const { viewsRouter } = require('./views.router.js');

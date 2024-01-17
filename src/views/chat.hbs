@@ -1,6 +1,47 @@
-<main>
+<!DOCTYPE html>
+<html lang="es">
 
-</main>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Page</title>
+    <style>
+        #chat-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/chat.js"></script>
+        .visibleOff {
+            display: none;
+        }
+
+        .log {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="chat-container">
+        <div id="messageLogs"></div>
+        <div>
+            <input type="text" id="chatUser" placeholder="Your Email">
+            <div id="checkUser" class="visibleOff">✓</div>
+            <textarea id="chatBox" placeholder="Type your message"></textarea>
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="clearMessages()">Clear Messages</button>
+        </div>
+    </div>
+
+    <script src="../public/js/chat.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+</body>
+
+</html>
+
+

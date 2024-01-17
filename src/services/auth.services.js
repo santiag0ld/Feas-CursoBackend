@@ -9,7 +9,7 @@ const registerUser = async (email, password) => {
 
     const newUser = { email, password: hashedPassword, role: 'user' };
 
-    await userMongo.addUser(newUser);
+    await userMongo.createUser(newUser);
 
     return { success: true, message: 'User registered successfully' };
   } catch (error) {
@@ -17,5 +17,28 @@ const registerUser = async (email, password) => {
     return { success: false, message: 'Registration failed' };
   }
 };
+
+/*
+const loginUser = async (email, password) => {
+  try {
+    const user = await userMongo.getUserByMail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return null;
+    }
+
+    return user;
+  } catch (error) {
+    console.error('Error authenticating user:', error);
+    return null;
+  }
+};
+*/
 
 module.exports = { registerUser };

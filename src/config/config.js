@@ -1,26 +1,37 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-
-exports.connectDB = async () => {
-  await mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm?retryWrites=true&w=majority`,
-  );
-  console.log('Base de datos conectada');
-};
-
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
-exports.sessionAtlas = (app) => {
+const connectDB = async () => {
+  try {
+    const uri = process.env.MONGO_URI || 'mongodb+srv://santifeas:4220@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm';
+    await mongoose.connect(uri);
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+    process.exit(1);
+  }
+};
+
+
+const sessionAtlas = (app) => {
+  const uri = process.env.MONGO_URI || 'mongodb+srv://santifeas:4220@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm';
   app.use(
+    
     session({
+      
       store: MongoStore.create({
-        mongoUrl: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm?retryWrites=true&w=majority`,
+        mongoUrl: uri,
         mongoOptions: {},
-        ttl: 3600, // milisegundos --> hs
+        ttl: 3600,
       }),
-      secret: 4220,
+      secret: process.env.SESSION_SECRET || 'default_secret',
       resave: true,
       saveUninitialized: true,
     })
   );
 };
+
+
+module.exports = { connectDB, sessionAtlas };

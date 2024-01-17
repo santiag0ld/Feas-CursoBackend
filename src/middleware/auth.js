@@ -13,3 +13,8 @@ exports.isAdmin = (req, res, next) => {
   }
   res.redirect('/login');
 };
+
+exports.authenticateLocal = passport.authenticate('local', {
+  successRedirect: '/success',
+  failureRedirect: '/login',
+});

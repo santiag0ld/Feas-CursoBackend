@@ -1,12 +1,15 @@
-// routes/views.router.js
 const express = require('express');
 const { Router } = require('express');
 const { ProductMongo } = require('../daos/mongo/products.daoMongo.js');
 const { registerUser } = require('../services/auth.services');
 const { authentication } = require('../middleware/auth.js');
+const passport = require('passport');
+const passportConfig = require('../config/passport.config');
 
 const router = Router();
 const productsMongo = new ProductMongo();
+
+passportConfig(router);
 
 router.get('/', async (req, res) => {
   let product = await productsMongo.getProducts();
@@ -34,7 +37,7 @@ router.get('/products', authentication, async (req, res) => {
 
 router.get('/register', async (req, res) => {
   res.render('register', {
-    title: 'Registrarse',
+    title: 'Register',
   });
 });
 
@@ -46,7 +49,7 @@ router.post('/register', async (req, res) => {
   if (result.success) {
     res.redirect('/login');
   } else {
-    res.render('register', { title: 'Registrarse', error: result.message });
+    res.render('register', { title: 'Register', error: result.message });
   }
 });
 
@@ -54,6 +57,16 @@ router.get('/login', async (req, res) => {
   res.render('login', {
     title: 'Login',
   });
+});
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',  
+}));
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/login');
 });
 
 router.get('/chat', async (req, res) => {

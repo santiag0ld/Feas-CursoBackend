@@ -35,6 +35,13 @@ router.get('/products', authentication, async (req, res) => {
   });
 });
 
+router.get('/github', passport.authenticate('github', {scope: ['user:email']}), async(req, res)=>{})
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/login'}),(req, res)=>{
+  req.session.user = req.user
+  res.redirect('/')
+})
+
 router.get('/register', async (req, res) => {
   res.render('register', {
     title: 'Register',

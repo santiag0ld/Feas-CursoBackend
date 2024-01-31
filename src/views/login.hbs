@@ -1,30 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="src/public/styles/login.css"> 
-</head>
-<body>
-    <div class="login-container">
-        <h2>Ingresar</h2>
-        <form action="/login" method="post" class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+<section class="section_account">
+    <h1>Ingresar</h1>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit">Ingresar</button>
-        </form>
-
-        <p>No tiene una cuenta? <a href="/register">Registrate</a></p>
-    </div>
-    <div>
-        <p>O puede ingresar con <a href="/github">Github</a></p>
-    </div>
-    
-</body>
-
-</html>
+    <form action="/api/sessions/login" method="POST" class="form-group">
+        <input type="email" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+        <button class="btn btn-primary" type="submit">Iniciar sesion</button>
+    </form>
+    <br>
+    <a href="/api/sessions/github" class="btn btn-dark"><i class="fa-brands fa-github"></i></a>
+    <br>
+        <a><strong>No tenes una cuenta? </strong></a>
+        <br>
+        <a href="/api/sessions/register" class="link-signup"><button class="btn btn-primary" type="submit">Registrate</button></a>
+</section>

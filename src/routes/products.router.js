@@ -113,4 +113,4 @@ router.delete('/', async (req, res) => {
   }
 });
 
-exports.productsRouter = router;
+module.exports = {  productsRouter: router };

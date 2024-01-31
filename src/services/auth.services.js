@@ -11,34 +11,11 @@ const registerUser = async (email, password) => {
 
     await userMongo.createUser(newUser);
 
-    return { success: true, message: 'User registered successfully' };
+    return { success: true, message: 'Usuario registrado con exito.' };
   } catch (error) {
-    console.error('Error registering user:', error);
-    return { success: false, message: 'Registration failed' };
+    console.error('Error en el registro:', error);
+    return { success: false, message: 'No se pudo completar el registro.' };
   }
 };
-
-/*
-const loginUser = async (email, password) => {
-  try {
-    const user = await userMongo.getUserByMail(email);
-
-    if (!user) {
-      return null;
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return null;
-    }
-
-    return user;
-  } catch (error) {
-    console.error('Error authenticating user:', error);
-    return null;
-  }
-};
-*/
 
 module.exports = { registerUser };

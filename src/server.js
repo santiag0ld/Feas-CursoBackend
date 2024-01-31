@@ -5,6 +5,7 @@ const serverIo = require('./middleware/serverIO.js');
 const { connectDB, sessionAtlas } = require('./config/config.js');
 const expressHandlebars = require('express-handlebars');
 const { viewsRouter } = require('./routes/views.router.js');
+const { sessionsRouter } = require('./routes/sessions.router.js');
 const { cartsRouter } = require('./routes/carts.router.js');
 const { productsRouter } = require('./routes/products.router.js');
 const passportConfig = require('./config/passport.config');
@@ -33,11 +34,12 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
 sessionAtlas(app);
-passportConfig(passport);
+passportConfig(app);
 
 app.use('/', viewsRouter);
-app.use('/api/carts/', cartsRouter);
-app.use('/api/products/', productsRouter);
+app.use('/sessions/', sessionsRouter);
+app.use('/carts/', cartsRouter);
+app.use('/products/', productsRouter);
 
 server.listen(port, () => {
   console.log(`Listening on port ${port}`);

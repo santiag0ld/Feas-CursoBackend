@@ -94,4 +94,4 @@ router.delete('/:cid', async (req, res) => {
   }
 });
 
-exports.cartsRouter = router;
+module.exports = { cartsRouter: router };

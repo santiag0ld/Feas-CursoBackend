@@ -5,9 +5,9 @@ const serverIo = require('./middleware/serverIO.js');
 const { connectDB, sessionAtlas } = require('./config/config.js');
 const expressHandlebars = require('express-handlebars');
 const { viewsRouter } = require('./routes/views.router.js');
-const { sessionsRouter } = require('./routes/sessions.router.js');
-const { cartsRouter } = require('./routes/carts.router.js');
-const { productsRouter } = require('./routes/products.router.js');
+const { sessionsRouter } = require('./routes/api/sessions.router.js');
+const { cartsRouter } = require('./routes/api/carts.router.js');
+const { productsRouter } = require('./routes/api/products.router.js');
 const passportConfig = require('./config/passport.config');
 const passport = require('passport');
 

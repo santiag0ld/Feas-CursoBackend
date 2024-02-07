@@ -9,7 +9,6 @@ const authToken = (req, res, next) => {
   const authHeader = req.headers["Authorization"];
   if (!authHeader)
     res.status(401).json({ status: "error", error: "not authenticated" });
-    //Bearer ... -> split -> ['Bearer', 'sgsdgagasdfasfasdf']
   const token = authHeader.split(' ')
   jwt.verify(token, JWT_PRIVATE_KEY, (err, user) => {
     if(err) return res.status(401).json({ status: "error", error: "not authorized" });

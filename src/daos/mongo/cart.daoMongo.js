@@ -24,6 +24,21 @@ class CartDaoMongo {
     }
   }
 
+  async increaseProductQuantity(cid, pId) {
+    const result = await this.model.updateOne(
+      { _id: cid, "products.product": pId },
+      { $inc: { "products.$.quantity": 1 } }
+    );
+    return await this.model.findById(cid);
+  }
+  decreaseProductQuantity = async (cid, pId) => {
+    const result = await this.model.updateOne(
+      { _id: cid, "products.product": pId },
+      { $inc: { "products.$.quantity": -1 } }
+    );
+    return await this.model.findById(cid);
+  }
+
   async updateCart(cid, products) {
     try {
       return await this.model.updateOne({ _id: new ObjectId(cid) }, { $set: { products } });

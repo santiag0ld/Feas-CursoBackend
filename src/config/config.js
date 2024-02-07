@@ -3,6 +3,22 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
+const { program } = require("../config/commander")
+
+const { mode } = program.opts()
+
+console.log('mode config: ', mode)
+dotenv.config({
+    path: mode === 'production' ? './.env.production' : './.env.development' 
+})
+
+const configObject = {
+    PORT: process.env.PORT || 4000,
+    mongo_url: process.env.MONGO_URI,
+    gh_client_id:'',
+    gh_client_secret: ''
+}
+
 const connectDB = async () => {
   try {
     const uri = process.env.MONGO_URI || 'mongodb+srv://santifeas:4220@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm';
@@ -13,7 +29,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
 
 const sessionAtlas = (app) => {
   const uri = process.env.MONGO_URI || 'mongodb+srv://santifeas:4220@vidaverdeecomm.vddlmop.mongodb.net/VidaVerdeEcomm';
@@ -34,4 +49,4 @@ const sessionAtlas = (app) => {
 };
 
 
-module.exports = { connectDB, sessionAtlas };
+module.exports = { connectDB, sessionAtlas, configObject };

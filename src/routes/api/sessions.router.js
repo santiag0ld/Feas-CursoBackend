@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { userModel } = require('../daos/mongo/models/user.model');
+const { userModel } = require('../../daos/mongo/models/user.model');
 const passport = require('passport');
 
 const router = Router();

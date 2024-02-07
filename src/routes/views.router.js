@@ -1,12 +1,7 @@
-const express = require("express");
 const { Router } = require("express");
 const { ProductMongo } = require("../daos/mongo/products.daoMongo.js");
 const { userModel } = require("../daos/mongo/models/user.model");
-const { registerUser } = require("../services/auth.services");
 const { authentication } = require("../middleware/auth.js");
-const passport = require("passport");
-const passportConfig = require("../config/passport.config");
-
 const router = Router();
 const productsMongo = new ProductMongo();
 

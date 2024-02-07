@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { CartMongo } = require('../daos/mongo/cart.daoMongo');
+const { CartMongo } = require('../../daos/mongo/cart.daoMongo');
 
 const router = Router();
 const cart = new CartMongo();

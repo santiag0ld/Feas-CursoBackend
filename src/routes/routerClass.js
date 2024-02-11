@@ -1,5 +1,4 @@
-import configObject from "../config/config.js";
-import { Router } from "express";
+const { Router } = require("express");
 
 export default class CustomRouter {
   constructor() {

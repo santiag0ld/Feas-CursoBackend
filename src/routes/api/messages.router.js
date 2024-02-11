@@ -1,10 +1,10 @@
-import { Router } from "express";
-import MessagesController from "../../controller/messages.controller.js";
+const { Router } = require("express");
+const { MessagesController } = require ( "../../controller/messages.controller.js");
 
 const router = Router();
 
-const control = new MessagesController()
+const mControl = new MessagesController()
 
-router.delete('/', control.clearMessages)
+router.delete('/', mControl.clearMessages)
 
-module.exports = {  messagesRouter: router };
+module.exports = { messagesRouter: router };

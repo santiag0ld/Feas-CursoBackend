@@ -1,16 +1,17 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import { program } from "../config/commander.js";
 
-const { program } = require("../config/commander")
+dotenv.config();
 
-const { mode } = program.opts()
+const { mode } = program.opts();
 
-console.log('mode config: ', mode)
-dotenv.config({
-    path: mode === 'production' ? './.env.production' : './.env.development' 
-})
+console.log('mode config: ', mode);
+
+const configPath = mode === 'production' ? './.env.production' : './.env.development';
+dotenv.config({ path: configPath });
 
 const configObject = {
     PORT: process.env.PORT || 4000,
@@ -48,5 +49,4 @@ const sessionAtlas = (app) => {
   );
 };
 
-
-module.exports = { connectDB, sessionAtlas, configObject };
+export { connectDB, sessionAtlas, configObject };

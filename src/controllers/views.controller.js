@@ -1,6 +1,5 @@
 import configObject from "../config/index.js";
 import { ProductClass } from "../dao/index.js";
-import CustomError from "../utils/errors.js";
 
 const productsService = new ProductClass()
 
@@ -27,7 +26,6 @@ class ViewsController {
 
   products = async (req, res) => {
     try {
-      // handle url API products
       const {
         page = 1,
         sort,
@@ -51,8 +49,7 @@ class ViewsController {
       ) {
         return res.renderPage("products", "Productos", { productError: true });
       }
-  
-      // update product
+
       const product = data.data.docs.map((prd) => ({
         ...prd,
         price: prd.price.toLocaleString("es-ES", { style: "decimal" }),
@@ -167,4 +164,4 @@ class ViewsController {
     }
   }
 }
-export default ViewsController;
+module.exports = ViewsController;

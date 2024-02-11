@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
@@ -10,6 +11,11 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'user' },
 });
 
+userSchema.pre('find', function () {
+  this.populate('cart');
+});
+
+userSchema.plugin(mongoosePaginate)
 
 const User = mongoose.model('User', userSchema);
 

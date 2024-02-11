@@ -12,15 +12,15 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/realTimeProducts">Real Time Products</a></li>
-                <li><a href="/chat">Chat</a></li>
-                <li><a href="/products">Products</a></li>
-                <li><a href="/sessions/login">Login</a></li>
+                <li><a href="/api/chat">Chat</a></li>
+                <li><a href="/api/products">Products</a></li>
+                <li><a href="/api/sessions/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
             </ul>
             {{#if user}}
-                <a href="/sessions/logout" class="btn btn-info">Salir</a>
+                <a href="/api/sessions/logout" class="btn btn-info">Salir</a>
             {{else}}
-                <a href="/sessions/login" class="btn btn-info">Ingresar</a>
+                <a href="/api/sessions/login" class="btn btn-info">Ingresar</a>
             {{/if}}
         </nav>
     </header>

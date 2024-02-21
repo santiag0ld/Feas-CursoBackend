@@ -6,7 +6,10 @@ import { createServer } from "node:http";
 import { serverIo } from "./middleware/serverIO.js";
 import { connectDB, sessionAtlas } from "./config/config.js";
 import appRouter from './routes/index.js';
+import cookieParser from "cookie-parser";
 import passportConfig from "./config/passport.config.js";
+import { configObject } from "./config/config.js";
+import SendmailTransport from "nodemailer/lib/sendmail-transport/index.js";
 
 const port = 8080;
 const app = express();
@@ -20,6 +23,8 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(cookieParser(configObject.cookies_code))
 
 const publicPath = path.join(path.dirname(new URL(import.meta.url).pathname), 'public');
 app.use(express.static(publicPath));

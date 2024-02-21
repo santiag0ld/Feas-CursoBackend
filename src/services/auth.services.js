@@ -1,11 +1,11 @@
-const bcrypt = require('bcrypt');
-const { UserMongo } = require('../daos/mongo/user.daoMongo.js');
+import { hash } from 'bcrypt';
+import { UserMongo } from '../daos/mongo/user.daoMongo.js';
 
 const userMongo = new UserMongo();
 
 const registerUser = async (email, password) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     const newUser = { email, password: hashedPassword, role: 'user' };
 
@@ -18,4 +18,4 @@ const registerUser = async (email, password) => {
   }
 };
 
-module.exports = { registerUser };
+export default { registerUser };

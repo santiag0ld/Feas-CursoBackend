@@ -6,4 +6,4 @@ class LastUpdateDTO {
       }
   }
   
-  export default LastUpdateDTO
+  export default LastUpdateDTO ;

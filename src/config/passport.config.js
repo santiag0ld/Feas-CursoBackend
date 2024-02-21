@@ -2,7 +2,7 @@ import passport from 'passport';
 import jwt from "passport-jwt";
 import { UserMongo } from '../daos/mongo/user.daoMongo.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
-const JWT_PRIVATE_KEY = process.env.SECRET_CODE;
+const JWT_PRIVATE_KEY = process.env.JWT_SECRET_CODE;
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;

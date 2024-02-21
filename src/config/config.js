@@ -14,6 +14,7 @@ dotenv.config({
 const configObject = {
     port: process.env.PORT,
     jwt_code: process.env.JWT_SECRET_CODE,
+    cookies_code: process.env.COOKIES_SECRET_CODE,
     mongo_url: process.env.MONGO_URI,
     admin: process.env.USERS_ADMIN,
     admin_pass: process.env.USER_ADMIN_PASS,
@@ -47,7 +48,7 @@ const sessionAtlas = (app) => {
         mongoOptions: {},
         ttl: 3600,
       }),
-      secret: process.env.SESSION_SECRET,
+      secret: process.env.COOKIES_SECRET_CODE,
       resave: true,
       saveUninitialized: true,
     })

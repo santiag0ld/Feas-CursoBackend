@@ -12,6 +12,7 @@ router
   .put('/:cid', cControl.updateProducts) 
   .delete('/:cid', cControl.removeProducts)
   .put('/:cid/product/:pid', cControl.updateProductQuantity)
-  .delete('/:cid/product/:pid', cControl.removeProductById);
+  .delete('/:cid/product/:pid', cControl.removeProductById)
+  .post("/:cid/purchase", cControl.purchaseCart);
 
 export default router;

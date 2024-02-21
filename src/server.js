@@ -27,6 +27,8 @@ app.use(express.static(publicPath));
 serverIo(server);
 connectDB();
 
+
+
 app.engine('.hbs', exphbs({
   defaultLayout:'main',
   extname:'.hbs'

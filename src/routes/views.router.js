@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleAuthFront } from "../middleware/handlePoliciesPASP.js";
+import { handleAuthFront } from "../middleware/auth.js";
 import ViewsController from "../controllers/views.controller.js";
 
 const router = Router();
@@ -11,11 +11,7 @@ router
   .get("/products", handleAuthFront(["PUBLIC"]), vControl.products)
   .get("/products/:pid", handleAuthFront(["PUBLIC"]), vControl.productById)
   .get("/cart", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.cart)
-  .get(
-    "/realTimeProducts",
-    handleAuthFront(["USER_PREMIUM"]),
-    vControl.realTimeProducts
-  )
+  .get("/realTimeProducts",handleAuthFront(["USER_PREMIUM"]),vControl.realTimeProducts)
   .get("/chat", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.chat)
   .get("/user", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.user);
 

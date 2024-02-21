@@ -4,7 +4,7 @@ import productsRouter from "./api/products.router.js";
 import messagesRouter from "./api/messages.router.js";
 import sessionsRouter from "./api/sessions.router.js";
 import cartsRouter from "./api/carts.router.js";
-import { handleAuthFront } from "../middleware/handlePoliciesPASP.js";
+import { handleAuthFront } from "../middleware/auth.js";
 
 const router = Router();
 

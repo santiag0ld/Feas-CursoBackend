@@ -1,20 +1,55 @@
-const passport = require('passport');
+import passport from "passport";
+import UsersController from "../controllers/users.controller.js";
 
-exports.authentication = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
+const uControl = new UsersController();
+
+const handleAuthFront = (policies) => {
+  return async (req, res, next) => {
+    try {
+      passport.authenticate('jwt', {session: false}, async function (err, user, info) {
+        if (err) next(err)
+
+        if (user) {
+          req.user = await uControl.getDataUserById(user.id)
+        }
+
+        if(policies[0] === 'PUBLIC') return next();
+
+        if (!user) return res.clearCookie('token').render("login", {title: "Login", answer: 'Usuario no logueado' })
+
+        if(user.role.toUpperCase() === 'ADMIN') return next();
+        if(!policies.includes(user.role.toUpperCase())) return res.render('error', {title: 'Ha ocurrido un error', answer: 'User not authorized', ...req.user})
+
+        next();
+      })(req, res, next);      
+    } catch (error) {
+      next(error)
+    }
+  };
 };
 
-exports.isAdmin = (req, res, next) => {
-  if (req.isAuthenticated() && req.user.role === 'admin') {
-    return next();
-  }
-  res.redirect('/login');
+const handleAuth = async (policies) => {
+  return async (req, res, next) => {
+    try {
+      passport.authenticate('jwt', {session: false}, async function (err, user, info) {
+        if (err) next(err)
+
+        if (user) {
+          req.user = await uControl.getDataUserById(user.id)
+        }
+
+        if(policies[0] === 'PUBLIC') return next();
+
+        if (!user) return res.sendUserError('Invalid token')
+
+        if(user.role.toUpperCase() === 'ADMIN') return next();
+        if(!policies.includes(user.role.toUpperCase())) return res.sendUserError('User not authorized')
+        next();
+      })(req, res, next);      
+    } catch (error) {
+      next(error)
+    }
+  };
 };
 
-exports.authenticateLocal = passport.authenticate('local', {
-  successRedirect: '/success',
-  failureRedirect: '/login',
-});
+export { handleAuthFront, handleAuth };

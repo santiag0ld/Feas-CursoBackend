@@ -1,10 +1,10 @@
-import configObject from "../config/config.js";
-import { UserClass } from "../daos/index.js";
-import createToken from "../utils/createToken.js";
+import { configObject } from "../config/config.js";
+import { UserMongo } from "../daos/mongo/user.daoMongo.js";
+import  createToken  from "../utils/jwt.js";
 import CustomError from "../utils/errors.js";
 import { createHash, isValidPassword } from "../utils/passwords.js";
-import validateFields from "../utils/validatefiels.js";
-const userService = new UserClass();
+import validateFields from "../utils/validatefields.js";
+const userService = new UserMongo();
 
 class SessionsController {
   constructor() {
@@ -31,16 +31,12 @@ class SessionsController {
 
       await userService.createUser(userData);
 
-      res.renderPage("login", "Login", {
-        answer: "Se ha registrado satisfactoriamente",
-      });
+      res.render("login", { title: "Login", answer: "Se ha registrado satisfactoriamente" });
     } catch (error) {
       if (error instanceof CustomError) {
-        res.renderPage("register", "Nuevo Registro", { answer: error.message });
+        res.render("register", { title: "Nuevo Registro", answer: error.message });
       } else {
-        res.renderPage("register", "Nuevo Registro", {
-          answer: "Ocurrio un error, vuelva a intentarlo",
-        });
+        res.render("register", { title: "Nuevo Registro", answer: "Ocurrió un error, vuelva a intentarlo" });
       }
     }
   };
@@ -72,7 +68,7 @@ class SessionsController {
         "Log In exitoso con Id: " + userFound.first_name
       );
     } catch (error) {
-      res.sendCatchError(error);
+      res.status(500).send({ message: error.message });
     }
   };
 
@@ -113,9 +109,9 @@ class SessionsController {
       res.redirect("/products");
     } catch (error) {
       if (error instanceof CustomError) {
-        res.sendUserError(error);
+        res.status(500).send({ message: error.message });
       } else {
-        res.sendServerError(error);
+        res.status(500).send({ message: error.message });
       }
     }
   };

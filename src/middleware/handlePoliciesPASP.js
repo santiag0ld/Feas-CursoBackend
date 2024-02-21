@@ -1,5 +1,5 @@
-const { passport } = require("passport");
-const { UsersController } = require("../controllers/users.controller.js");
+import passport from "passport";
+import UsersController from "../controllers/users.controller.js";
 
 const uControl = new UsersController();
 
@@ -52,4 +52,4 @@ const handleAuth = async (policies) => {
   };
 };
 
-module.exports = { handleAuthFront, handleAuth };
+export { handleAuthFront, handleAuth };

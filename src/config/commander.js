@@ -1,9 +1,9 @@
-const { Command } = require('commander')
+import { Command } from 'commander';
 
-const program = new Command()
+const program = new Command();
 
 program 
     .option('--mode <mode>', 'modo de manejo de entornos', 'production')
-    .parse()
+    .parse();
 
-module.exports = { program }
+export { program };

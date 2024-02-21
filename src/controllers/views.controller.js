@@ -1,27 +1,28 @@
-import configObject from "../config/index.js";
-import { ProductClass } from "../dao/index.js";
+import { configObject } from "../config/config.js";
+import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
+import fetch from "node-fetch";
 
-const productsService = new ProductClass()
+const productsService = new ProductMongo();
 
 class ViewsController {
   constructor() {}
 
   login = (req, res) => {
     try {
-      if(req.user) return res.redirect('/products')
-      res.renderPage("login", "Login");
+      if (req.user) return res.redirect('/products');
+      res.render('login', { title: "Login" });
     } catch (error) {
-      res.renderError(error);
+      res.status(500).send({ message: error.message });
     }
   }
 
   register = (req, res) => {
-  try {
-    if(req.user) return res.redirect('/products')
-    res.renderPage("register", "Nuevo Registro");
-  } catch (error) {
-    res.renderError(error);
-  }
+    try {
+      if (req.user) return res.redirect('/products');
+      res.render("register", { title: "Nuevo Registro" });
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
   }
 
   products = async (req, res) => {
@@ -47,7 +48,7 @@ class ViewsController {
         Number(page) > Number(data.data.totalPages) ||
         Number(page) < 0
       ) {
-        return res.renderPage("products", "Productos", { productError: true });
+        return res.status(500).send({ message: "Error fetching product data" });
       }
 
       const product = data.data.docs.map((prd) => ({
@@ -64,15 +65,7 @@ class ViewsController {
         return `/products?${params}`;
       };
   
-      res.renderPageEstruc("products", "Productos", {
-        control: {
-          productError: false,
-        },
-        arrays: {
-          product,
-          category: await productsService.getCategorys(),
-        },
-        pageControl: {
+      res.render("products", { title: "Productos", product, category: await productsService.getCategorys(), pageControl: {
           page: data.data.page,
           totalPages: data.data.totalPages,
           hasPrevPage: data.data.hasPrevPage,
@@ -88,7 +81,7 @@ class ViewsController {
         },
       });
     } catch (error) {
-      res.renderError(error);
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -100,7 +93,7 @@ class ViewsController {
       const resp = await (await fetch(apiUrl)).json();
       const { isError, data } = resp
   
-      res.renderPageEstruc("product","Producto",
+      res.render("product","Producto",
         {
           control: {
             productError: isError,
@@ -112,7 +105,7 @@ class ViewsController {
       );
   
     } catch (error) {
-      res.renderError(error);
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -131,9 +124,9 @@ class ViewsController {
       cartNoEmpty: products.length !== 0,
       products: products.length !== 0 ? products : undefined
     };
-    res.renderPage('cart', 'Carrito', objectRender);
+    res.render('cart', { title: 'Carrito', ...objectRender });
   } catch (error) {
-    res.renderError('Hubo un problema al cargar el carrito', error);
+    res.status(500).send('Hubo un problema al cargar el carrito', error);
   }
   };
 
@@ -146,22 +139,20 @@ class ViewsController {
         price: prd.price.toLocaleString('es-ES', { style: 'decimal' }),
       }));
   
-      res.renderPageEstruc('realTimeProducts', 'Productos en tiempo Real', {}, {
-        product,
-      });
+      res.render('realTimeProducts', { title: 'Productos en tiempo Real', product });
     } catch (error) {
-      res.renderError('Hubo un problema al cargar los productos', error);
+      res.status(500).send('Hubo un problema al cargar los productos', error);
     }
   }
 
-  chat = async (req, res) => res.renderPage('chat', 'Chat');
+  chat = async (req, res) => res.render('chat', { title: 'Chat' });
 
   user = async (req, res) => {
     try {
-      res.renderPageEstruc('user','Usuario')
+      res.render('user', { title: 'Usuario' });
     } catch (error) {
-      res.renderError(error)
-    }
+      res.status(500).send({ message: error.message });
+    } 
   }
 }
-module.exports = ViewsController;
+export default ViewsController;

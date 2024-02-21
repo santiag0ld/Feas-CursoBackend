@@ -1,10 +1,10 @@
-import { ProductClass } from "../dao/index.js";
+import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
 import { convertSort, convertAvailability, checkCategory } from "../helpers/mongoHelper.js";
-import validateFields from "../utils/validatefiels.js";
+import validateFields from "../utils/validatefields.js";
 
 class ProductsController {
   constructor() {
-    this.service = new ProductClass();
+    this.service = new ProductMongo();
   };
 
   getProducts = async (req, res) => {
@@ -49,7 +49,7 @@ class ProductsController {
         nextLink: nextLink,
       });
     } catch (error) {
-      res.sendCatchError(error, "An error occurred in the API request");
+      res.status(500).send({ message: 'An error occurred in the API request'});
     }
   }; 
   
@@ -60,7 +60,7 @@ class ProductsController {
       const product = await this.service.getProductsById(pid);
       res.sendSuccessOrNotFound (product, "Id")
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }; 
 
@@ -83,7 +83,7 @@ class ProductsController {
       const product = await this.service.addProduct(newProduct);
       res.sendSuccess(product);
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }; 
 
@@ -94,7 +94,7 @@ class ProductsController {
       const product = await this.service.updateProduct(pid, changedProduct);
       res.sendSuccessOrNotFound (product, "Id")
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }; 
 
@@ -104,7 +104,7 @@ class ProductsController {
       const product = await this.service.deleteProductById(pid);
       res.sendSuccessOrNotFound (product, "Id")
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   };
 
@@ -114,7 +114,7 @@ class ProductsController {
       const product = await this.service.deleteProductByCode(pcode);
       res.sendSuccessOrNotFound (product, "Code")
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }; 
 
@@ -123,7 +123,7 @@ class ProductsController {
       const categorys = await this.service.getCategorys();
       res.sendSuccessOrNotFound (categorys, "Categorys")
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }; 
 }

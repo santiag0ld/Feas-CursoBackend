@@ -1,5 +1,5 @@
-const { ObjectId } = require("bson");
-const { cartModel } = require("./models/carts.model.js");
+import { ObjectId } from "bson";
+import { cartModel } from "./models/carts.model.js";
 
 class CartDaoMongo {
   constructor() {
@@ -103,4 +103,4 @@ class CartDaoMongo {
   }
 }
 
-exports.CartMongo = CartDaoMongo;
+export const CartMongo = CartDaoMongo;

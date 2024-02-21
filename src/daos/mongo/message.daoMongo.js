@@ -1,4 +1,4 @@
-const { messageModel} = require('./models/messages.model.js');
+import { messageModel } from './models/messages.model.js';
 
 class MessageDaoMongo {
   constructor (){
@@ -27,4 +27,4 @@ class MessageDaoMongo {
   }
 }
 
-exports.MessageMongo = MessageDaoMongo;
+export const MessageMongo = MessageDaoMongo;

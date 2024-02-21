@@ -1,9 +1,9 @@
-import { MessageClass } from "../daos/index.js";
+import { MessageMongo } from "../daos/mongo/message.daoMongo.js";
 
 
 class MessagesController {
   constructor() {
-    this.service = new MessageClass
+    this.service = new MessageMongo();
   };
 
   clearMessages = async (req, res) => {
@@ -11,7 +11,7 @@ class MessagesController {
       await this.service.clearMessages();
       res.sendSuccess({})
     } catch(error){
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 }

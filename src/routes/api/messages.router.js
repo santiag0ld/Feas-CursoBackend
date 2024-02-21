@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const { MessagesController } = require ( "../../controller/messages.controller.js");
+import { Router } from "express";
+import MessagesController from "../../controllers/messages.controller.js";
 
 const router = Router();
 
@@ -7,4 +7,4 @@ const mControl = new MessagesController()
 
 router.delete('/', mControl.clearMessages)
 
-module.exports = { messagesRouter: router };
+export default router;

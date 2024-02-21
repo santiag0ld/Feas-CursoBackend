@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "passport";
-import { handleAuthFront } from "../../middleware/handlePoliciesPASP.js";
 import SessionsController from "../../controllers/sessions.controller.js";
 
 const router = Router();
@@ -13,7 +12,5 @@ router.get ('/logout', sControl.logout);
 
 router.get('/github', passport.authenticate('github', {scope:['user:email']}), sControl.github)
 router.get('/githubcallback', passport.authenticate('github', {session: false, failureRedirect: '/'}), sControl.githubcallback)
-
-router.get('/current', handleAuthFront(['USER']), sControl.pruebasCurrent)
 
 export default router;

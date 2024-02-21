@@ -1,10 +1,13 @@
-import { CartClass, ProductClass } from "../daos/index.js";
+import { CartMongo } from "../daos/mongo/cart.daoMongo.js";
+import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
+import { TicketMongo } from "../daos/mongo/tickets.daoMongo.js";
 
-const productsService = new ProductClass();
+const productsService = new ProductMongo();
+const ticketService = new TicketMongo();
 
 class CartsController {
   constructor() {
-    this.service = new CartClass();
+    this.service = new CartMongo();
   }
 
   getCarts = async (req, res) => {
@@ -20,7 +23,7 @@ class CartsController {
     
       res.sendSuccess(carts)
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -38,7 +41,7 @@ class CartsController {
     
       res.sendSuccess(carts)
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -47,24 +50,31 @@ class CartsController {
       const resp = await this.service.create();
       res.sendSuccess(resp)
     } catch(err){
-      res.sendCatchError(err)
+      res.status(500).send({ message: error.message });
     }
   }
 
   addProduct = async (req, res) => {
-    try{
-      const {cid, pid} = req.params;
+    try {
+      const { cid, pid } = req.params;
 
       const cart = await this.service.getCartsById(cid);
-      if (!cart) return res.sendNotFound('Carrito no encontrado');
+      if (!cart) return res.sendNotFound('Carrito no encontrado.');
+
       const product = await productsService.getProductsById(pid);
-      if (!product) return res.sendNotFound('Producto no encontrado');
-    
+      if (!product) return res.sendNotFound('Producto no encontrado.');
+
+      if (product.stock < 1) {
+        return res.status(400).send({ message: 'Producto sin stock suficiente.' });
+      }
+
+      const updatedProduct = await productsService.updateProductStock(pid, product.stock - 1);
+
       const updatedCart = await this.service.increaseProductQuantity(cid, pid);
-      
-      res.sendSuccess(updatedCart)
-    } catch(error){
-      res.sendCatchError(error)
+
+      res.sendSuccess(updatedCart);
+    } catch (error) {
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -82,7 +92,7 @@ class CartsController {
 
       res.sendSuccess(updatedCart)
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -91,7 +101,7 @@ class CartsController {
       const {cid, pid} = req.params;
       const {quantity} = req.body*1
       
-      if (isNaN(quantity) ) res.sendUserError("Se ha introducido mal la cantidad")
+      if (isNaN(quantity) ) res.status(500).send({ message: 'Se introdujo una cantidad erronea.' });
 
       const cart = await this.service.getCartsById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
@@ -102,7 +112,7 @@ class CartsController {
 
       res.sendSuccess(updatedCart)
     } catch (error) {
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -119,7 +129,7 @@ class CartsController {
     
       res.sendSuccess(updatedCart)
     } catch(error){
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   } 
 
@@ -135,7 +145,7 @@ class CartsController {
     
       res.sendSuccess(updatedCart)
     } catch(error){
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
 
@@ -150,9 +160,37 @@ class CartsController {
     
       res.sendSuccess(updatedCart)
     } catch(error){
-      res.sendCatchError(error)
+      res.status(500).send({ message: error.message });
     }
   }
+
+  purchaseCart = async (req, res) => {
+    try {
+      const { cid } = req.params;
+
+      const cart = await this.service.getCartsById(cid);
+      if (!cart) return res.sendNotFound('Carrito no encontrado');
+
+      let totalAmount = 0;
+      for (const item of cart.products) {
+        totalAmount += item.price * item.quantity;
+      }
+
+      const ticketCode = await ticketService.generateTicketCode();
+
+      const ticket = await ticketService.createTicket({
+        code: ticketCode,
+        purchase_datetime: new Date(),
+        amount: totalAmount,
+        purchaser: req.user.email,
+        products: cart.products,
+      });
+
+      res.sendSuccess({ message: "Se realizo con exito la compra del carrito " + cid, ticket });
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  };
 }
 
 export default CartsController;

@@ -1,19 +1,47 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
-const UserDaoMongo = require('../daos/mongo/user.daoMongo').UserMongo;
-const GithubStrategy = require('passport-github2');
+import passport from 'passport';
+import jwt from "passport-jwt";
+import { UserMongo } from '../daos/mongo/user.daoMongo.js';
+import { Strategy as GithubStrategy } from 'passport-github2';
+const JWT_PRIVATE_KEY = process.env.SECRET_CODE;
+
+const JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
+
+const userService = new UserMongo();
 
 const passportConfig = (app) => {
 
+  const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) {
+      token = req.cookies["token"];
+    }
+    return token;
+  };
+
+  passport.use("jwt", new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: JWT_PRIVATE_KEY,
+      },
+      async (jwt_payload, done) => {
+        try {
+          return done(null, jwt_payload);
+        } catch (error) {
+          return done(error);
+        }
+      },
+    ),
+  );
+
   passport.use('github', new GithubStrategy({
-    clientID: 'Iv1.989cc3d2cef77af7',
-    clientSecret: '38bc9d5172c852c6cd732c4e5cfbe457d1a24276',
-    callbackURL: 'http://localhost:8080/githubcallback'
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: `http://localhost:${process.env.PORT}/api/sessions/githubcallback`,
 }, async(accesToken, refreshToken, profile, done)=> {
     try {
         console.log(profile);
-        const userDaoMongo = new UserDaoMongo();
+        const userDaoMongo = new userDaoMongo();
         const githubEmail = profile._json.email;
         if (!githubEmail) {
             return done(null, false, { message: 'GitHub did not provide a valid email.' });
@@ -25,7 +53,7 @@ const passportConfig = (app) => {
                 first_name: profile._json.name ? profile._json.name.split(' ')[0] : '',
                 last_name: profile._json.name ? profile._json.name.split(' ')[1] || '' : '',
                 email: githubEmail,
-                password: '123',
+                password: '',
                 role: 'user',
             };
 
@@ -38,9 +66,11 @@ const passportConfig = (app) => {
     }
 }));
 
+/*
+
 passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
   try {
-    const userDaoMongo = new UserDaoMongo();
+    const userDaoMongo = new UserMongo();
     const user = await userDaoMongo.getUserByMail(email);
 
     if (!user) {
@@ -70,16 +100,17 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const userDaoMongo = new UserDaoMongo();
+    const userDaoMongo = new userDaoMongo();
     const user = await userDaoMongo.getUserById(id);
     done(null, user);
   } catch (error) {
     done(error);
   }
 });
-
+*/
 app.use(passport.initialize());
 app.use(passport.session());
 };
 
-module.exports = passportConfig;
+
+export default passportConfig ;

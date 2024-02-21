@@ -1,4 +1,7 @@
-const User = require('./models/user.model.js');
+import User from './models/user.model.js';
+import { CartMongo } from './cart.daoMongo.js';
+
+const cartsService = new CartMongo();
 
 class UserDaoMongo {
   constructor() {
@@ -23,6 +26,7 @@ class UserDaoMongo {
 
   async createUser(newUser) {
     try {
+      newUser.cart = await cartsService.create();
       return await this.model.create(newUser);
     } catch (error) {
       console.error('Error creating user:', error);
@@ -39,4 +43,4 @@ class UserDaoMongo {
   }
 }
 
-exports.UserMongo = UserDaoMongo;
+export const UserMongo = UserDaoMongo;

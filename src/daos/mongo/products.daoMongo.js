@@ -1,5 +1,5 @@
 //const { ObjectId } = require('bson');
-const { productModel } = require("./models/products.model.js");
+import { productModel } from "./models/products.model.js";
 
 class ProductDaoMongo {
   constructor() {
@@ -76,6 +76,19 @@ class ProductDaoMongo {
     }
   };
 
+  updateProductStock = async (pid, newStock) => {
+    try {
+      const product = await this.model.findById(pid);
+      if (!product) throw new Error('Prodcuto no encontrado.');
+
+      product.stock = newStock;
+      await product.save();
+      return product;
+    } catch (error) {
+      throw new Error("Error actualizando el stock.");
+    }
+  };
+
   deleteProductById = async (pid) => {
     const deleteProd = await this.getProductsById(pid);
 
@@ -106,4 +119,4 @@ class ProductDaoMongo {
   };
 }
 
-exports.ProductMongo = ProductDaoMongo;
+export const ProductMongo = ProductDaoMongo;

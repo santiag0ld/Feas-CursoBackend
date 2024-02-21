@@ -1,6 +1,6 @@
-import { ProductClass } from "../daos/index.js";
+import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
 
-const productService = new ProductClass();
+const productService = new ProductMongo();
 
 export const convertSort = (option, element) => {
   const sortOptions = {

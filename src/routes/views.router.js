@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { handleAuthFront } from "../middleware/handlePoliciesPASP.js";
-import ViewsController from "../controller/views.controller.js";
+import ViewsController from "../controllers/views.controller.js";
 
 const router = Router();
 const vControl = new ViewsController();

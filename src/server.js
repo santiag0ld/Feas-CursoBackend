@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cookieParser(configObject.cookies_code))
 
-const publicPath = path.join(path.dirname(new URL(import.meta.url).pathname), 'public');
+const publicPath = path.join(path.dirname(new URL(import.meta.url).pathname), './src/public');
 app.use(express.static(publicPath));
 
 serverIo(server);
@@ -37,7 +37,7 @@ app.engine('.hbs', exphbs({
   extname:'.hbs'
 }));
 app.set("view engine", ".hbs");
-app.set("views", path.join(__dirname, "views"));
+app.set('views','./src/views');
 
 sessionAtlas(app);
 passportConfig(app);

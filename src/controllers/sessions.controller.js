@@ -8,7 +8,7 @@ const userService = new UserMongo();
 
 class SessionsController {
   constructor() {
-    this.service = "";
+    this.service = new UserMongo();
   }
   requieredfield = {
     register: ["first_name", "last_name", "email", "birthday", "password"],

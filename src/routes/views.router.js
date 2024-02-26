@@ -14,5 +14,4 @@ router
   .get("/realTimeProducts",handleAuthFront(["USER_PREMIUM"]),vControl.realTimeProducts)
   .get("/chat", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.chat)
   .get("/user", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.user);
-
 export default router;

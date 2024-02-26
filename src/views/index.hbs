@@ -1,4 +1,22 @@
+<header>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/realTimeProducts">Real Time Products</a></li>
+      <li><a href="/api/chat">Chat</a></li>
+      <li><a href="/api/products">Products</a></li>
+      <li><a href="/api/sessions/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+    {{#if user}}
+    <a href="/api/sessions/logout" class="btn btn-info">Salir</a>
+    {{else}}
+    <a href="/api/sessions/login" class="btn btn-info">Ingresar</a>
+    {{/if}}
+  </nav>
+</header>
 <main>
+
   <div>
     <h1>Bienvenidos a nuestra Tienda!</h1>
     <div>

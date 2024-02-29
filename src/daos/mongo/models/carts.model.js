@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const cartSchema = new Schema({
-  cart: { type: Array, default: [] },
+  products: { type: Array, default: [] },
   atCreated: { type: Date, default: Date() },
 });
 

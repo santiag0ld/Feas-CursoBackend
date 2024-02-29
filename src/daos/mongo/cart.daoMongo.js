@@ -24,6 +24,15 @@ class CartDaoMongo {
     }
   }
 
+  async getCartById(cartId) {
+    try {
+      return await this.model.findById(cartId).populate('products');
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error obteniendo el carrito por ID.");
+    }
+  }
+
   async increaseProductQuantity(cid, pId) {
     const result = await this.model.updateOne(
       { _id: cid, "products.product": pId },

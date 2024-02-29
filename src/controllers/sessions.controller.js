@@ -1,7 +1,7 @@
 import { configObject } from "../config/config.js";
 import { UserMongo } from "../daos/mongo/user.daoMongo.js";
 import  createToken  from "../utils/jwt.js";
-import CustomError from "../utils/errors.js";
+import CustomError from "../utils/CustomError.js";
 import { createHash, isValidPassword } from "../utils/passwords.js";
 import validateFields from "../utils/validatefields.js";
 const userService = new UserMongo();

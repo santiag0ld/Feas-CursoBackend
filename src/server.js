@@ -9,7 +9,7 @@ import appRouter from './routes/index.js';
 import cookieParser from "cookie-parser";
 import passportConfig from "./config/passport.config.js";
 import { configObject } from "./config/config.js";
-import SendmailTransport from "nodemailer/lib/sendmail-transport/index.js";
+import { generateMockProducts } from './helpers/mocking-module.js';
 
 const port = 8080;
 const app = express();
@@ -38,6 +38,15 @@ app.engine('.hbs', exphbs({
 }));
 app.set("view engine", ".hbs");
 app.set('views','./src/views');
+
+app.get('/mockingproducts', (req, res) => {
+  try {
+    const products = generateMockProducts(100);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to generate mock products' });
+  }
+});
 
 sessionAtlas(app);
 passportConfig(app);

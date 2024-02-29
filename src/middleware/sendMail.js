@@ -1,5 +1,6 @@
 import { createTransport } from "nodemailer";
 import { configObject } from "../config/config.js";
+import { userInfo } from "os";
 
 const transport = createTransport({
   service: "gmail",
@@ -13,8 +14,8 @@ const transport = createTransport({
 export async function sendMail() {
   return await transport.sendMail({
     from: "Enviado por <sant.feas@gmail.com>",
-    to: destino,
-    subject: "",
-    html: "<div><h1>Email de prueba</h1></div>",
+    to: user?.email,
+    subject: "Confirmacion de compra",
+    html: "<div><h1>Gracias por su compra!</h1></div>",
   });
 }

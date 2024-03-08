@@ -1,3 +1,4 @@
+import { logger } from '../../utils/logger.js';
 import { messageModel } from './models/messages.model.js';
 
 class MessageDaoMongo {
@@ -14,7 +15,7 @@ class MessageDaoMongo {
     try {
       return await this.model.find({})
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 
@@ -22,7 +23,7 @@ class MessageDaoMongo {
     try {
       return await this.model.deleteMany({})
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 }

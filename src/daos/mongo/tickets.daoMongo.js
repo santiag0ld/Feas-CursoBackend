@@ -1,6 +1,7 @@
 import { Ticket } from './models/ticket.model.js';
 import generateTicketCode from '../../utils/ticketCode.js';
 import { CartMongo } from "./cart.daoMongo.js";
+import { logger } from '../../utils/logger.js';
 
 const cartService = new CartMongo();
 
@@ -40,7 +41,7 @@ class TicketdaoMongo {
 
       return ticket;
     } catch (error) {
-      console.error('Error al completar la compra:', error);
+      logger.error('Error al completar la compra:', error);
       throw error;
     }
   }

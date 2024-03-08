@@ -1,8 +1,6 @@
-import { handleAuth } from "../middleware/auth.js";
 import { CartMongo } from "../daos/mongo/cart.daoMongo.js";
 import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
 import { TicketMongo } from "../daos/mongo/tickets.daoMongo.js";
-
 
 const productsService = new ProductMongo();
 const ticketService = new TicketMongo();

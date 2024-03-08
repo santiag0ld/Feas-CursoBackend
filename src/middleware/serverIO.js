@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { MessageMongo } from '../daos/mongo/message.daoMongo.js';
 import { ProductMongo } from '../daos/mongo/products.daoMongo.js';
+import { logger } from '../utils/logger.js';
 
 export function serverIo(server) {
   const io = new Server(server);
@@ -8,7 +9,7 @@ export function serverIo(server) {
   const messages = new MessageMongo();
 
   io.on('connection', ios => {
-    console.log("Nuevo cliente conectado");
+    logger.info("Nuevo cliente conectado");
 
     ios.on('newProduct', async newProduct => {
       await products.addProduct(newProduct);

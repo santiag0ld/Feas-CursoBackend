@@ -1,5 +1,6 @@
 import generateHtml from "../utils/generateHtml.js";
 import { sendMail } from "../middleware/sendMail.js";
+import { logger } from "../utils/logger.js";
 
 class MailController {
   constructor() {}
@@ -19,7 +20,7 @@ class MailController {
 
       const handleEmailSendingSuccess = () => {
 
-        console.log('Email sent successfully!');
+        logger.info('Email sent successfully!');
       };
 
       handleEmailSendingSuccess();

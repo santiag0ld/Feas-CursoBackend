@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { cartModel } from "./models/carts.model.js";
+import { logger } from "../../utils/logger.js";
 
 class CartDaoMongo {
   constructor() {
@@ -10,7 +11,7 @@ class CartDaoMongo {
     try {
       return await this.model.create({});
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error creando el carrito.");
     }
   }
@@ -19,7 +20,7 @@ class CartDaoMongo {
     try {
       return await this.model.findOne({ _id: new ObjectId(cid) }).populate('products');
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error localizando el carrito.");
     }
   }
@@ -28,7 +29,7 @@ class CartDaoMongo {
     try {
       return await this.model.findById(cartId).populate('products');
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error obteniendo el carrito por ID.");
     }
   }
@@ -52,7 +53,7 @@ class CartDaoMongo {
     try {
       return await this.model.updateOne({ _id: new ObjectId(cid) }, { $set: { products } });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error actualizando el carrito.");
     }
   }
@@ -73,7 +74,7 @@ class CartDaoMongo {
 
       return await cart.save();
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error actualizando los productos.");
     }
   }
@@ -82,7 +83,7 @@ class CartDaoMongo {
     try {
       return await this.model.updateOne({ _id: new ObjectId(cid) }, { $set: { products: [] } });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Hubo un error.");
     }
   }
@@ -106,7 +107,7 @@ class CartDaoMongo {
 
       return await cart.save();
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       throw new Error("Error agregando el producto.");
     }
   }

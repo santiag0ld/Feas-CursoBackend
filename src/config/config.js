@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { program } from "./commander.js";
+import { logger } from '../utils/logger.js';
 
 const opts = program.opts();
 
@@ -30,9 +31,9 @@ const connectDB = async () => {
   try {
     const uri = process.env.MONGO_URI;
     await mongoose.connect(uri);
-    console.log('Connected to MongoDB');
+    logger.info('Connected to MongoDB');
   } catch (error) {
-    console.error('Error connecting to MongoDB:', error.message);
+    logger.error('Error connecting to MongoDB:', error.message);
     process.exit(1);
   }
 };

@@ -1,4 +1,5 @@
 import { UserMongo } from "../daos/mongo/user.daoMongo.js";
+import { logger } from "../utils/logger.js";
 
 class UsersController {
   constructor() {
@@ -33,7 +34,7 @@ class UsersController {
         payload: result,
       });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 

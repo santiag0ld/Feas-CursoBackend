@@ -10,12 +10,14 @@ import cookieParser from "cookie-parser";
 import passportConfig from "./config/passport.config.js";
 import { configObject } from "./config/config.js";
 import { generateMockProducts } from './helpers/mocking-module.js';
+import  { logger, addLogger } from './utils/logger.js';
+
 
 const port = 8080;
 const app = express();
 
 const { mode } = program.opts();
-console.log("Mode config: " + mode);
+logger.info(`Mode config: ${mode}`);
 
 const server = createServer(app);
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -23,8 +25,8 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(cookieParser(configObject.cookies_code))
+app.use(addLogger);
 
 const publicPath = path.join(path.dirname(new URL(import.meta.url).pathname), './src/public');
 app.use(express.static(publicPath));
@@ -54,5 +56,5 @@ passportConfig(app);
 app.use(appRouter);
 
 server.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  logger.info(`Listening on port ${port}`);
 });

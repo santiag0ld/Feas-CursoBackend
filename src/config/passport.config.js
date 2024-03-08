@@ -2,12 +2,13 @@ import passport from 'passport';
 import jwt from "passport-jwt";
 import { UserMongo } from '../daos/mongo/user.daoMongo.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
+import { logger } from '../utils/logger.js';
 const JWT_PRIVATE_KEY = process.env.JWT_SECRET_CODE;
 
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
-const userService = new UserMongo();
+const userDaoMongo = new UserMongo();
 
 const passportConfig = (app) => {
 
@@ -40,8 +41,7 @@ const passportConfig = (app) => {
     callbackURL: `http://localhost:${process.env.PORT}/api/sessions/githubcallback`,
 }, async(accesToken, refreshToken, profile, done)=> {
     try {
-        console.log(profile);
-        const userDaoMongo = new userDaoMongo();
+        logger.info(profile);
         const githubEmail = profile._json.email;
         if (!githubEmail) {
             return done(null, false, { message: 'GitHub did not provide a valid email.' });
@@ -66,48 +66,6 @@ const passportConfig = (app) => {
     }
 }));
 
-/*
-
-passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-  try {
-    const userDaoMongo = new UserMongo();
-    const user = await userDaoMongo.getUserByMail(email);
-
-    if (!user) {
-      return done(null, false, { message: 'Invalid email' });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return done(null, false, { message: 'Invalid password' });
-    }
-
-    if (email === 'adminCoder@coder.com') {
-      user.role = 'admin';
-    } else {
-      user.role = 'user';
-    }
-    return done(null, user);
-  } catch (error) {
-    return done(error);
-  }
-}));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const userDaoMongo = new userDaoMongo();
-    const user = await userDaoMongo.getUserById(id);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
-*/
 app.use(passport.initialize());
 app.use(passport.session());
 };

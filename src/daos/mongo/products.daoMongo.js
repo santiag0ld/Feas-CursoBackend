@@ -1,4 +1,5 @@
 //const { ObjectId } = require('bson');
+import { logger } from "../../utils/logger.js";
 import { productModel } from "./models/products.model.js";
 
 class ProductDaoMongo {
@@ -10,7 +11,7 @@ class ProductDaoMongo {
     try {
       return await this.model.find().lean();
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -18,7 +19,7 @@ class ProductDaoMongo {
     try {
       return await this.model.find({ _id: pid });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   };
 
@@ -71,7 +72,7 @@ class ProductDaoMongo {
       if (error.code === 11000) {
         return "Producto ya existente.";
       }
-      console.log(error);
+      logger.error(error);
       return error;
     }
   };
@@ -99,7 +100,7 @@ class ProductDaoMongo {
       await this.model.deleteOne({ _id: pid });
       return deleteProd;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       return "Error en el pedido.";
     }
   };

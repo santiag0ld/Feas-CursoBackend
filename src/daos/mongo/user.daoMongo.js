@@ -1,5 +1,6 @@
 import User from './models/user.model.js';
 import { CartMongo } from './cart.daoMongo.js';
+import { logger } from '../../utils/logger.js';
 
 const cartsService = new CartMongo();
 
@@ -29,7 +30,7 @@ class UserDaoMongo {
       newUser.cart = await cartsService.create();
       return await this.model.create(newUser);
     } catch (error) {
-      console.error('Error creating user:', error);
+      logger.error('No se pudo crear el usuario:', error);
       throw error;
     }
   }

@@ -5,7 +5,7 @@ import mailRouter from "./api/mail.router.js";
 import messagesRouter from "./api/messages.router.js";
 import sessionsRouter from "./api/sessions.router.js";
 import cartsRouter from "./api/carts.router.js";
-import { handleAuthFront } from "../middleware/auth.js";
+import { handleAuth } from "../middleware/auth.js";
 import { logger } from "../utils/logger.js";
 
 const router = Router();
@@ -19,7 +19,7 @@ router
   .use("/api/mail", mailRouter)
   .use("/api/messages", messagesRouter)
   .use("/api/users/", () => {})
-  .get("/current", handleAuthFront(["USER"]), () => {
+  .get("/current", handleAuth(["USER"]), () => {
     logger.info("datos sensibles");
   })
   .use("*", (req, res) => res.status(404).send("Not Found"))

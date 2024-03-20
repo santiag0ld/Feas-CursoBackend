@@ -9,7 +9,7 @@ const productSchema = new Schema({
   stock: { type: Number, required: true },
   category: { type: String, lowercase: true, required: true },
   thumbnail: { type: String, lowercase: true, required: true },
-  owner: {type: String, lowercase: true}
+  owner: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 export const productModel = model("products", productSchema);

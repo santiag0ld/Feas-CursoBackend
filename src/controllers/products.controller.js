@@ -53,7 +53,6 @@ class ProductsController {
     }
   }; 
   
-
   getProductsById = async (req, res) => {
     try {
       const { pid } = req.params;

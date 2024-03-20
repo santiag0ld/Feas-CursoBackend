@@ -8,7 +8,7 @@ const userSchema = new Schema({
   age: { type: Number, required: true },
   password: { type: String, required: true },
   cart: { type: Schema.Types.ObjectId, ref: 'Cart' },
-  role: { type: String, default: 'user' },
+  role: { type: String, enum: ['user', 'admin','premium'], default: 'user' },
 });
 
 userSchema.pre('find', function () {

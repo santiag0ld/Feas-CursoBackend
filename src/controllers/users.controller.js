@@ -24,7 +24,6 @@ class UsersController {
     try {
       const { first_name, last_name, email, password } = req.body;
 
-
       const newUser = { first_name, last_name, password, email };
 
       const result = await this.usersService.create(newUser);
@@ -57,6 +56,21 @@ class UsersController {
       status: "success",
       payload: result,
     });
+  };
+
+  toggleUserRole = async (req, res) => {
+    try {
+      const { uid } = req.params;
+      const user = await this.service.getUserById(uid);
+      if (!user) return res.status(404).send({ message: "User not found" });
+
+      user.role = user.role === "user" ? "premium" : "user";
+      await user.save();
+
+      res.sendSuccess({ message: "Rol del usuario actualizado", user });
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
   };
 }
 

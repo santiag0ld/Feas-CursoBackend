@@ -1,21 +1,21 @@
 import { Router } from "express";
-import { handleAuthFront } from "../middleware/auth.js";
+import { handleAuth } from "../middleware/auth.js";
 import ViewsController from "../controllers/views.controller.js";
 
 const router = Router();
 const vControl = new ViewsController();
 
 router
-  .get("/", handleAuthFront(["PUBLIC"]), vControl.login)
-  .get("/register", handleAuthFront(["PUBLIC"]), vControl.register)
-  .get("/products", handleAuthFront(["PUBLIC"]), vControl.products)
-  .get("/products/:pid", handleAuthFront(["PUBLIC"]), vControl.productById)
-  .get("/cart", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.cart)
+  .get("/", handleAuth(["PUBLIC"]), vControl.login)
+  .get("/register", handleAuth(["PUBLIC"]), vControl.register)
+  .get("/products", handleAuth(["PUBLIC"]), vControl.products)
+  .get("/products/:pid", handleAuth(["PUBLIC"]), vControl.productById)
+  .get("/cart", handleAuth(["USER", "USER_PREMIUM"]), vControl.cart)
   .get(
     "/realTimeProducts",
-    handleAuthFront(["USER_PREMIUM"]),
+    handleAuth(["USER_PREMIUM"]),
     vControl.realTimeProducts
   )
-  .get("/chat", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.chat)
-  .get("/user", handleAuthFront(["USER", "USER_PREMIUM"]), vControl.user);
+  .get("/chat", handleAuth(["USER", "USER_PREMIUM"]), vControl.chat)
+  .get("/user", handleAuth(["USER", "USER_PREMIUM"]), vControl.user);
 export default router;

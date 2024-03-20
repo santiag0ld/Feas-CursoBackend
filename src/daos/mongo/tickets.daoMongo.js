@@ -12,7 +12,7 @@ class TicketdaoMongo {
 
   async generateTicket() {
     try {
-      const cart = await Cart.findById(this.cid).populate('products.product');
+      const cart = await cart.findById(this.cid).populate('products.product');
 
       const purchasedProducts = cart.products.filter(({ product, quantity }) => {
         return product.stock >= quantity;
@@ -42,6 +42,16 @@ class TicketdaoMongo {
       return ticket;
     } catch (error) {
       logger.error('Error al completar la compra:', error);
+      throw error;
+    }
+  }
+
+  async createTicket(ticketData) {
+    try {
+      const ticket = await Ticket.create(ticketData);
+      return ticket;
+    } catch (error) {
+      logger.error('Error al crear el ticket:', error);
       throw error;
     }
   }

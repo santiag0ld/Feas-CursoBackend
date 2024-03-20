@@ -10,21 +10,21 @@ import { logger } from "../utils/logger.js";
 
 const router = Router();
 
-router.use("/", viewsRouter);
+router
+  .use("/", viewsRouter)
 
-router.use("/api/products/", productsRouter);
-router.use("/api/carts/", cartsRouter);
-router.use("/api/sessions/", sessionsRouter);
-router.use('/api/mail', mailRouter)
-router.use("/api/messages", messagesRouter);
-router.use("/api/users/", () => {});
-
-router.get('/current', handleAuthFront(['USER']), ()=> {
-  logger.info("datos sensibles");
-})
-router.use("*", (req, res) => res.status(404).send("Not Found"));
-router.use((err, req, res, next) =>
-  res.status(500).json({ message: "Error Server", err })
-);
+  .use("/api/products/", productsRouter)
+  .use("/api/carts/", cartsRouter)
+  .use("/api/sessions/", sessionsRouter)
+  .use("/api/mail", mailRouter)
+  .use("/api/messages", messagesRouter)
+  .use("/api/users/", () => {})
+  .get("/current", handleAuthFront(["USER"]), () => {
+    logger.info("datos sensibles");
+  })
+  .use("*", (req, res) => res.status(404).send("Not Found"))
+  .use((err, req, res, next) =>
+    res.status(500).json({ message: "Error Server", err })
+  );
 
 export default router;

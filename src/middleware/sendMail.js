@@ -1,6 +1,5 @@
 import { createTransport } from "nodemailer";
 import { configObject } from "../config/config.js";
-import { userInfo } from "os";
 
 const transport = createTransport({
   service: "gmail",
@@ -11,7 +10,33 @@ const transport = createTransport({
   },
 });
 
-export async function sendMail() {
+export function sendPasswordResetEmail(email, token) {
+  return new Promise((resolve, reject) => {
+    const expiryTime = new Date();
+    expiryTime.setHours(expiryTime.getHours() + 1);
+
+    const mailOptions = {
+      from: 'your_email@gmail.com',
+      to: email,
+      subject: 'Password Reset Request',
+      html: `<p>You have requested a password reset. Click the following link to reset your password:</p>
+             <a href="http://yourwebsite.com/reset-password?token=${token}">Reset Password</a>`,
+      text: `This link is valid until ${expiryTime.toISOString()}`,
+    };
+
+    transport.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        reject(error);
+      } else {
+        console.log('Email sent:', info.response);
+        resolve(info.response);
+      }
+    });
+  });
+}
+
+export async function sendConfirmationMail() {
   return await transport.sendMail({
     from: "Enviado por <sant.feas@gmail.com>",
     to: user?.email,

@@ -6,7 +6,6 @@ class CartDaoMongo {
   constructor() {
     this.model = cartModel;
   }
-
   async create() {
     try {
       return await this.model.create({});
@@ -15,7 +14,6 @@ class CartDaoMongo {
       throw new Error("Error creando el carrito.");
     }
   }
-
   async getCarts(cid) {
     try {
       return await this.model.findOne({ _id: new ObjectId(cid) }).populate('products');
@@ -24,7 +22,6 @@ class CartDaoMongo {
       throw new Error("Error localizando el carrito.");
     }
   }
-
   async getCartById(cartId) {
     try {
       return await this.model.findById(cartId).populate('products');
@@ -33,7 +30,6 @@ class CartDaoMongo {
       throw new Error("Error obteniendo el carrito por ID.");
     }
   }
-
   async increaseProductQuantity(cid, pId) {
     const result = await this.model.updateOne(
       { _id: cid, "products.product": pId },
@@ -41,14 +37,13 @@ class CartDaoMongo {
     );
     return await this.model.findById(cid);
   }
-  decreaseProductQuantity = async (cid, pId) => {
+  async decreaseProductQuantity(cid, pId) {
     const result = await this.model.updateOne(
       { _id: cid, "products.product": pId },
       { $inc: { "products.$.quantity": -1 } }
     );
     return await this.model.findById(cid);
   }
-
   async updateCart(cid, products) {
     try {
       return await this.model.updateOne({ _id: new ObjectId(cid) }, { $set: { products } });
@@ -57,7 +52,6 @@ class CartDaoMongo {
       throw new Error("Error actualizando el carrito.");
     }
   }
-
   async updateProductQuantity(cid, productId, quantity) {
     try {
       const cart = await this.getCarts(cid);
@@ -78,7 +72,6 @@ class CartDaoMongo {
       throw new Error("Error actualizando los productos.");
     }
   }
-
   async removeAllProducts(cid) {
     try {
       return await this.model.updateOne({ _id: new ObjectId(cid) }, { $set: { products: [] } });
@@ -87,7 +80,6 @@ class CartDaoMongo {
       throw new Error("Hubo un error.");
     }
   }
-
   async addProduct(cid, productId) {
     try {
       const cart = await this.getCarts(cid);

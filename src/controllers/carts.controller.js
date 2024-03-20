@@ -3,7 +3,7 @@ import { ProductMongo } from "../daos/mongo/products.daoMongo.js";
 import { TicketMongo } from "../daos/mongo/tickets.daoMongo.js";
 
 const productsService = new ProductMongo();
-const ticketService = new TicketMongo();
+const ticketMongo = new TicketMongo();
 
 class CartsController {
   constructor() {
@@ -36,7 +36,7 @@ class CartsController {
       if(populate) {
         carts = await this.service.getCartsByIdPopulate(cid);
       } else {
-        carts = await this.service.getCartsById(cid);
+        carts = await this.service.getCartById(cid);
       }
     
       res.sendSuccess(carts)
@@ -50,7 +50,7 @@ class CartsController {
       const resp = await this.service.create();
       res.sendSuccess(resp)
     } catch(err){
-      res.status(500).send({ message: error.message });
+      res.status(500).send({ message: err.message });
     }
   }
 
@@ -58,7 +58,7 @@ class CartsController {
     try {
       const { cid, pid } = req.params;
 
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado.');
 
       const product = await productsService.getProductsById(pid);
@@ -82,10 +82,10 @@ class CartsController {
     try {
       const { cid, pid } = req.params;
   
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
   
-      const product = await products.getProductsById(pid);
+      const product = await product.getProductsById(pid);
       if (!product) return res.sendNotFound('Producto no encontrado');
   
       const updatedCart = await this.service.decreaseProductQuantity(cid, pid);
@@ -103,7 +103,7 @@ class CartsController {
       
       if (isNaN(quantity) ) res.status(500).send({ message: 'Se introdujo una cantidad erronea.' });
 
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
       const product = await productsService.getProductsById(pid);
       if (!product) return res.sendNotFound('Producto no encontrado');
@@ -120,12 +120,12 @@ class CartsController {
     try{
       const {cid, pid} = req.params;
 
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
       const product = await productsService.getProductsById(pid);
       if (!product) return res.sendNotFound('Producto no encontrado');
     
-      const updatedCart = await this.service.removeProduct(cid, pid);
+      const updatedCart = await this.service.removeAllProducts(cid, pid);
     
       res.sendSuccess(updatedCart)
     } catch(error){
@@ -138,7 +138,7 @@ class CartsController {
       const { cid } = req.params;
       const newProducts = req.body
     
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
 
       const updatedCart = await this.service.updateCartProducts(cid, newProducts);
@@ -153,10 +153,10 @@ class CartsController {
     try{
       const { cid } = req.params;
 
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
     
-      const updatedCart = await this.service.removeCartProducts(cid);
+      const updatedCart = await this.service.removeAllProducts(cid);
     
       res.sendSuccess(updatedCart)
     } catch(error){
@@ -168,7 +168,7 @@ class CartsController {
     try {
       const { cid } = req.params;
 
-      const cart = await this.service.getCartsById(cid);
+      const cart = await this.service.getCartById(cid);
       if (!cart) return res.sendNotFound('Carrito no encontrado');
 
       let totalAmount = 0;
@@ -176,9 +176,9 @@ class CartsController {
         totalAmount += item.price * item.quantity;
       }
 
-      const ticketCode = await ticketService.generateTicketCode();
+      const ticketCode = await ticketMongo.generateTicket();
 
-      const ticket = await ticketService.createTicket({
+      const ticket = await ticketMongo.createTicket({
         code: ticketCode,
         purchase_datetime: new Date(),
         amount: totalAmount,

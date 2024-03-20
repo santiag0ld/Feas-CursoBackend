@@ -9,8 +9,8 @@ class ViewsController {
 
   login = (req, res) => {
     try {
-      if (req.user) return res.redirect('/products');
-      res.render('login', { title: "Login" });
+      if (req.user) return res.redirect('/');
+      res.render('index', { title: "Home" });
     } catch (error) {
       res.status(500).send({ message: error.message });
     }
